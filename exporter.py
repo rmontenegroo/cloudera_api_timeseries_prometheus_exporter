@@ -4,7 +4,7 @@ from flatten_json import flatten
 from prometheus_client import start_http_server, Gauge
 import argparse
 
-BANNED_LABELS = ('metricName', 'value', 'startTime', 'timestamp', 'endTime', 'expression', 'type', 'attributes_category', 'attributes_active')
+BANNED_LABELS = ('metricName', 'value', 'startTime', 'timestamp', 'endTime', 'expression', 'type', 'attributes_category', 'attributes_active', 'aggregateStatistics_maxTime', 'aggregateStatistics_minTime', 'aggregateStatistics_sampleTime')
 
 parser = argparse.ArgumentParser(description="Cloudera API Timeseries Exporter")
 
@@ -108,8 +108,7 @@ if __name__ == "__main__":
                             try:
                                 metric_collected[_metricName].labels(*labels_values).set(value)
                             except Exception as e:
-                                print(f"{metricName} collecting failed.")
-                                raise e
+                                print(f"\n{metricName} collecting failed. {e}")
 
         print('.', end='', flush=True)
         time.sleep(args.interval)
